@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-class SinginPage extends StatefulWidget {
-  const SinginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SinginPage> createState() => _SinginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SinginPageState extends State<SinginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,12 +33,12 @@ class _SinginPageState extends State<SinginPage> {
                   children: [
                     Center(
                       child: Text(
-                        "Sign in",
+                        "Sign Up",
                         style: TextStyle(fontSize: 26, color: Colors.white),
                       ),
                     ),
                     Text(
-                      "Login Your Account",
+                      "Create An Account",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -55,7 +54,7 @@ class _SinginPageState extends State<SinginPage> {
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               vertical: 40, horizontal: 10),
-                          height: MediaQuery.of(context).size.height / 2.0,
+                          height: MediaQuery.of(context).size.height / 1.5,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -63,6 +62,24 @@ class _SinginPageState extends State<SinginPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Text(
+                                "Name",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1, color: Colors.black87),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      prefixIcon: Icon(Icons.person_outline_outlined)),
+                                ),
+                              ),
                               Text(
                                 "Email",
                                 style: TextStyle(
@@ -103,17 +120,24 @@ class _SinginPageState extends State<SinginPage> {
                                   obscureText: true,
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
+                         SizedBox(height: 10,),
+                                Text(
+                                "Confirm Password",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
                               ),
                               Container(
-                                alignment: Alignment.topRight,
-                                child: Text(
-                                  "Forget Password?",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1, color: Colors.black87),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      prefixIcon: Icon(Icons.key_outlined)),
+                                  obscureText: true,
                                 ),
                               ),
                               SizedBox(
@@ -129,7 +153,7 @@ class _SinginPageState extends State<SinginPage> {
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: Text(
-                                      "Sign In",
+                                      "Sign Up",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 20,
@@ -143,19 +167,7 @@ class _SinginPageState extends State<SinginPage> {
                         ),
                       ),
                     ),
-                    Row( 
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [ 
-                        Text("Don't have an account?",style: TextStyle( 
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),),
-                        Text("Sign Up Now!",style: TextStyle( 
-                          color: Colors.blue,
-                          fontSize: 16,
-                        ),)
-                      ],
-                    )
+                    
                   ],
                 ),
               )
