@@ -12,9 +12,9 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color.fromARGB(255, 66, 25, 90),
-      body: SingleChildScrollView(
-        child: Container(
+      body:  Container(
           padding: EdgeInsets.only(top: 36),
           child: Column(
             children: [
@@ -122,7 +122,7 @@ class _ChatPageState extends State<ChatPage> {
             ],
           ),
         ),
-      ),
+      
     );
   }
 }
