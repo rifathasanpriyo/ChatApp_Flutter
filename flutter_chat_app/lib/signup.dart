@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_app/chat_page.dart';
+import 'package:flutter_application_1/chatpage.dart';
+
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -86,7 +87,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               vertical: 40, horizontal: 10),
-                          height: MediaQuery.of(context).size.height / 1.5,
+                          height: MediaQuery.of(context).size.height / 1.37,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
