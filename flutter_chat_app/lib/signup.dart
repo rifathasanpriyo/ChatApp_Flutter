@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/chatpage.dart';
-
+import 'package:flutter_application_1/database_chatapp/database.dart';
+import 'package:flutter_application_1/database_chatapp/shared_orefer.dart';
+import 'package:flutter_application_1/home.dart';
+import 'package:random_string/random_string.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -20,26 +23,54 @@ class _SignUpPageState extends State<SignUpPage> {
   final _fromkey = GlobalKey<FormState>();
 
   SignUpFunction() async {
-  if (Password!=null && Namecontroller.text.isNotEmpty && Emailcontroller.text.isNotEmpty) {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: Email,
-        password: Password,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Sign Up Successful")));
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage()));
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "weak-password") {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Password is too weak")));
-      } else if (e.code == "email-already-in-use") {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("This email is already in use")));
+    if (Password != null &&
+        Namecontroller.text.isNotEmpty &&
+        Emailcontroller.text.isNotEmpty) {
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: Email,
+          password: Password,
+        );
+
+        String Id = randomAlphaNumeric(10);
+
+        Map<String, dynamic> userInfoMap = {
+          "Name": Namecontroller.text,
+          "Email": Emailcontroller.text,
+          "UserName": Emailcontroller.text.replaceAll("@gmail.com", ""),
+          //"Photo":"images/profilepic.png",
+          "Id": Id,
+        };
+        await DataBaseMethod().addUserDetails(userInfoMap, Id);
+
+        await SharePreferenceHelper().saveUserId(Id);
+        await SharePreferenceHelper()
+            .saveUserName(Emailcontroller.text.replaceAll("@gmail.com", ""));
+        await SharePreferenceHelper().saveUserMail(Emailcontroller.text);
+        await SharePreferenceHelper().saveUserDisplayName(Namecontroller.text);
+        //await SharePreferenceHelper().saveUserPhoto("images/profilepic.png");
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Sign Up Successful")));
+
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Home()));
+      } on FirebaseAuthException catch (e) {
+        if (e.code == "weak-password") {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Password is too weak")));
+        } else if (e.code == "email-already-in-use") {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("This email is already in use")));
+        }
+      } catch (e) {
+       print("Error adding user details: $e");
+  ScaffoldMessenger.of(context)
+      .showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("An error occurred")));
     }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -206,12 +237,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                   child: Material(
                                     elevation: 15,
                                     child: GestureDetector(
-                                      onTap: (){ 
-                                        if(_fromkey.currentState!.validate()){ 
+                                      onTap: () {
+                                        if (_fromkey.currentState!.validate()) {
                                           setState(() {
-                                            Name=Namecontroller.text;
-                                            Email=Emailcontroller.text;
-                                            Password=Passwordcontroller.text;
+                                            Name = Namecontroller.text;
+                                            Email = Emailcontroller.text;
+                                            Password = Passwordcontroller.text;
                                           });
                                         }
                                         SignUpFunction();
