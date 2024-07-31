@@ -97,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     Center(
                       child: Text(
-                        "Sign Up",
+                        "Sign U",
                         style: TextStyle(fontSize: 26, color: Colors.white),
                       ),
                     ),
