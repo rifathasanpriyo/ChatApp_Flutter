@@ -4,6 +4,7 @@ import 'package:flutter_application_1/chatpage.dart';
 import 'package:flutter_application_1/database_chatapp/database.dart';
 import 'package:flutter_application_1/database_chatapp/shared_orefer.dart';
 import 'package:flutter_application_1/home.dart';
+import 'package:flutter_application_1/signin_page.dart';
 import 'package:random_string/random_string.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -14,18 +15,19 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  String Name = "", Email = "", Password = "";
+  String Name = "", Email = "", Password = "",ConfirmPassword="";
 
   TextEditingController Namecontroller = new TextEditingController();
   TextEditingController Emailcontroller = new TextEditingController();
   TextEditingController Passwordcontroller = new TextEditingController();
+  TextEditingController ConfirmPasswordcontroller = new TextEditingController();
 
   final _fromkey = GlobalKey<FormState>();
 
   SignUpFunction() async {
     if (Password != null &&
         Namecontroller.text.isNotEmpty &&
-        Emailcontroller.text.isNotEmpty) {
+        Emailcontroller.text.isNotEmpty && Password==ConfirmPassword) {
       try {
         UserCredential userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -55,7 +57,10 @@ class _SignUpPageState extends State<SignUpPage> {
             .showSnackBar(SnackBar(content: Text("Sign Up Successful")));
 
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home()));
+            context, MaterialPageRoute(builder: (context) => SinginPage()));
+
+
+
       } on FirebaseAuthException catch (e) {
         if (e.code == "weak-password") {
           ScaffoldMessenger.of(context)
@@ -63,13 +68,27 @@ class _SignUpPageState extends State<SignUpPage> {
         } else if (e.code == "email-already-in-use") {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("This email is already in use")));
+              
         }
-      } catch (e) {
+        else if (e.code == "invalid-email") {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("This email is invalid in use")));
+      }
+        else{ 
+          print("Error adding user details: $e");
+        }
+       }
+      catch (e) {
        print("Error adding user details: $e");
   ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
       }
     }
+    if (Password != ConfirmPassword) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("Passwords do not match.")));
+    return;
+  }
   }
 
   @override
@@ -118,7 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               vertical: 40, horizontal: 10),
-                          height: MediaQuery.of(context).size.height / 1.37,
+                          height: MediaQuery.of(context).size.height / 1.33,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -223,7 +242,16 @@ class _SignUpPageState extends State<SignUpPage> {
                                       border: Border.all(
                                           width: 1, color: Colors.black87),
                                       borderRadius: BorderRadius.circular(10)),
-                                  child: TextField(
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      
+                                      if (value == null || value.isEmpty) {
+                                        return "Please enter a password";
+                                      }
+                                      return null;
+                                    
+                                    },
+                                    controller: ConfirmPasswordcontroller,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         prefixIcon: Icon(Icons.key_outlined)),
@@ -243,6 +271,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                             Name = Namecontroller.text;
                                             Email = Emailcontroller.text;
                                             Password = Passwordcontroller.text;
+                                            ConfirmPassword=ConfirmPasswordcontroller.text;
                                           });
                                         }
                                         SignUpFunction();

@@ -8,4 +8,11 @@ class DataBaseMethod {
         .doc(Id)
         .set(userInfoMap);
   }
+
+  Future<QuerySnapshot> getUserByMail(String mail) async {
+    return await FirebaseFirestore.instance
+        .collection("users")
+        .where("Email", isEqualTo: mail)
+        .get();
+  }
 }
