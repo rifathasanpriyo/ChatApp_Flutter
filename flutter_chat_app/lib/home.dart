@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,6 +13,61 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   bool search = false;
+   final TextEditingController _searchController = new TextEditingController();
+   var resultList =[];
+
+       @override
+  void initState() {
+    
+    _searchController.addListener(_onSearchChanged);
+    super.initState();
+  }
+  _onSearchChanged(){ 
+    print(_searchController.text);
+    showSearchResult();
+  }
+
+
+      List allResults=[];
+      getClientStream()async{ 
+             var data = await FirebaseFirestore.instance.collection("users").orderBy("Name").get();
+             setState(() {
+               allResults=data.docs;
+             });
+             showSearchResult();
+
+
+      }
+      @override
+  void dispose() {
+      _searchController.removeListener(_onSearchChanged);
+      _searchController.dispose();
+
+     super.dispose();
+  }
+  @override
+  void didChangeDependencies() {
+    getClientStream();
+    super.didChangeDependencies();
+  }
+
+  showSearchResult(){ 
+    var ShowResult =[];
+    if(_searchController.text!=""){ 
+      for(var clinetshot in allResults){ 
+
+        var name = clinetshot['Name'].toString().toLowerCase();
+
+        if(name.contains(_searchController.text.toLowerCase())){ 
+
+          ShowResult.add(clinetshot);
+        }
+      }
+    }
+    setState(() {
+      resultList =ShowResult;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,15 +79,16 @@ class _HomeState extends State<Home> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(
+               padding:  EdgeInsets.only(
                   left: 20, right: 20, top: 40, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                  search? Expanded(
                    child: TextField( 
+                    controller: _searchController,
                     decoration: InputDecoration( border: InputBorder.none ,hintText: "Search Here",hintStyle: TextStyle( 
-
+                     
                       color: Colors.white70
 
                     ),),style: TextStyle(color: Colors.white),
@@ -61,9 +118,9 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            Expanded(
+             Expanded(
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                padding:  search ? EdgeInsets.symmetric(vertical: 5, horizontal:5) : EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 height:search ?MediaQuery.sizeOf(context).height / 1.16 : MediaQuery.sizeOf(context).height / 1.15,
                 width: MediaQuery.sizeOf(context).width,
                 decoration: BoxDecoration(
@@ -71,9 +128,17 @@ class _HomeState extends State<Home> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20))),
-                child: Column(
+                child: search ?  ListView.builder( 
+              itemCount: resultList.length,
+              itemBuilder:(context,Index){ 
+                  return ListTile( 
+                    title: Text(resultList[Index]['Name']),
+                    subtitle:Text(resultList[Index]['Email']) ,
+                  );
+                 
+            }  )   : Column(
                   children: [
-                    Row(
+                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipRRect(
