@@ -15,4 +15,38 @@ class DataBaseMethod {
         .where("Email", isEqualTo: mail)
         .get();
   }
+
+  createChatRoom(
+      String chatroomid, Map<String, dynamic> chatRoomInfoMap) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection("ChatRooms")
+        .doc(chatroomid)
+        .get();
+    if (snapshot.exists) {
+      return true;
+    } else {
+      return FirebaseFirestore.instance
+          .collection("ChatRooms")
+          .doc(chatroomid)
+          .set(chatRoomInfoMap);
+    }
+  }
+
+  Future addMessageFIrebase(String chatroomid, String messageId,
+      Map<String, dynamic> messageInfoMap) async {
+    return await FirebaseFirestore.instance
+        .collection("ChatRooms")
+        .doc(chatroomid)
+        .collection("chats")
+        .doc(messageId)
+        .set(messageInfoMap);
+  }
+
+  Future LastMessageFIrebase(
+      String chatroomid, Map<String, dynamic> lastmessageInfoMap) async {
+    return await FirebaseFirestore.instance
+        .collection("ChatRooms")
+        .doc(chatroomid)
+        .update(lastmessageInfoMap);
+  }
 }
