@@ -81,7 +81,7 @@ class _HomeState extends State<Home> {
 
   Future<void> getthesharepre() async {
     myname = await SharePreferenceHelper().getUserDisplayName();
-    myusername = await SharePreferenceHelper().getUserMail();
+    myusername = await SharePreferenceHelper().getUserName();
     mymail = await SharePreferenceHelper().getUserMail();
     if (mounted) {
       setState(() {});
