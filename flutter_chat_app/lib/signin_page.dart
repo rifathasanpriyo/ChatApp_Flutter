@@ -60,6 +60,7 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home()));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Container(
           child: Stack(
@@ -106,7 +107,10 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home()));
                           height: MediaQuery.of(context).size.height / 1.8,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              gradient: LinearGradient(
+                        colors: [Color.fromARGB(255, 27, 12, 52), Colors.purple],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight),
                               borderRadius: BorderRadius.circular(10)),
                           child: Form(
                             key: _fromkey,
@@ -117,13 +121,13 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home()));
                                   "Email",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1, color: Colors.black87),
+                                          width: 1, color: Colors.white54),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
                                     validator: (value) {
@@ -133,8 +137,11 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home()));
                                     },
                                     controller: Emailcontroller,
                                     decoration: InputDecoration(
+                                        
                                         border: InputBorder.none,
-                                        prefixIcon: Icon(Icons.mail_outline)),
+                                        
+                                        prefixIcon: Icon(Icons.mail_outline,color: Colors.white54,)),
+                                        style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                                 SizedBox(
@@ -144,13 +151,13 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home()));
                                   "Password",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1, color: Colors.black87),
+                                          width: 1, color: Colors.white54),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
                                     validator: (value) {
@@ -161,8 +168,9 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home()));
                                     controller: Passwordcontroller,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        prefixIcon: Icon(Icons.key_outlined)),
+                                        prefixIcon: Icon(Icons.key_outlined,color: Colors.white54,)),
                                     obscureText: true,
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                                 SizedBox(
@@ -174,7 +182,7 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home()));
                                     "Forget Password?",
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: Colors.black,
+                                        color: Colors.white70,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -199,9 +207,12 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home()));
                                       child: Container(
                                         padding: EdgeInsets.all(10),
                                         decoration: BoxDecoration(
-                                            color: Color(0xFF7f30fe),
+                                             gradient: LinearGradient(
+                        colors: [Color.fromARGB(255, 101, 58, 171), Colors.blue],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight),
                                             borderRadius:
-                                                BorderRadius.circular(5)),
+                                                BorderRadius.circular(0)),
                                         child: Text(
                                           "Sign In",
                                           style: TextStyle(
@@ -223,7 +234,7 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home()));
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [ 
                         Text("Don't have an account?",style: TextStyle( 
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 16,
                         ),),
                         GestureDetector(

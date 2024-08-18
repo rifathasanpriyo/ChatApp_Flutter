@@ -16,8 +16,12 @@ class ProfileInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: Text("Profile Info",style: TextStyle(color: Colors.white),),
+        title: Text(
+          "Profile Info",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.purple,
       ),
       body: SingleChildScrollView(
@@ -33,9 +37,10 @@ class ProfileInfoPage extends StatelessWidget {
                   // Profile Picture
                   CircleAvatar(
                     radius: 50,
-                  backgroundImage: photo != null
+                    backgroundImage: photo != null
                         ? NetworkImage(photo)
-                        : AssetImage('assets/default_avatar.png') as ImageProvider, // Replace with your default image path
+                        : AssetImage('assets/default_avatar.png')
+                            as ImageProvider, // Replace with your default image path
                   ),
                   const SizedBox(width: 20),
                   // Name and Status
@@ -67,21 +72,31 @@ class ProfileInfoPage extends StatelessWidget {
             // Contact Information
             ListTile(
               leading: Icon(Icons.person, color: Colors.blue),
-              title: Text("Username"),
-              subtitle: Text(username),
+              title: Text(
+                "Username",
+                style: TextStyle(color: Colors.white),
+              ),
+              subtitle: Text(
+                username,
+                style: TextStyle(color: Colors.white60),
+              ),
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.email, color: Colors.blue),
-              title: Text("Email"),
-              subtitle: Text(mail),
+              title: Text("Email",style: TextStyle(color: Colors.white),),
+              subtitle: Text(mail,style: TextStyle(color: Colors.white60),),
             ),
             Divider(),
-            SizedBox(height: 40,),
-            ElevatedButton(onPressed: (){ 
-             Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>SinginPage() ));
-             
-            }, child: Text("Log Out"))
+            SizedBox(
+              height: 40,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (_) => SinginPage()));
+                },
+                child: Text("Log Out"))
             // Add more fields as needed
           ],
         ),

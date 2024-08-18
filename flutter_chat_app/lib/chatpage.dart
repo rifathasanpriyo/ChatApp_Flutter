@@ -95,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
               topRight: Radius.circular(24),
               bottomRight: sendByme ? Radius.circular(0) : Radius.circular(24),
             ),
-            color: sendByme ? Colors.blue : const Color.fromARGB(255, 218, 7, 7),
+            color: sendByme ? Colors.blue : Color.fromARGB(255, 139, 36, 36),
           ),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -188,7 +188,7 @@ class _ChatPageState extends State<ChatPage> {
                   child: Container(
                     padding: EdgeInsets.only(left: 20, right: 20, top: 10),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.black87,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30),
@@ -196,6 +196,7 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     child: Column(
                       children: [
+                        
                         Expanded(
                           child: chatMessage(),
                         ),
@@ -206,11 +207,13 @@ class _ChatPageState extends State<ChatPage> {
                           child: Container(
                             padding: EdgeInsets.only(left: 10),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Color.fromARGB(255, 64, 17, 72),
                               borderRadius: BorderRadius.circular(10),
                             ),
+                            
                             child: Row(
                               children: [
+                                
                                 Expanded(
                                   child: TextField(
                                     controller: _messagecontroller,
@@ -218,9 +221,10 @@ class _ChatPageState extends State<ChatPage> {
                                       border: InputBorder.none,
                                       hintText: "Type a message",
                                       hintStyle: TextStyle(
-                                        color: Colors.black45,
+                                        color: Colors.white54,
                                       ),
                                     ),
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                                 GestureDetector(
@@ -231,7 +235,7 @@ class _ChatPageState extends State<ChatPage> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Icon(
                                       Icons.send_outlined,
-                                      color: Colors.black45,
+                                      color: Colors.white54,
                                     ),
                                   ),
                                 ),

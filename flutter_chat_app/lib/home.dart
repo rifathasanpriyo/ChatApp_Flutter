@@ -146,11 +146,11 @@ class _HomeState extends State<Home> {
                           ),
                           SizedBox(width: 6,),
                           const Text(
-                              "Chat APP",
+                              "Kotha Barta",
                               style: TextStyle(
                                   fontSize: 22,
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.w800),
                             ),
                         ],
                       ),
@@ -238,8 +238,8 @@ class _HomeState extends State<Home> {
                                     ? Text(resultList[index]['Name'][0])
                                     : null,
                               ),
-                              title: Text(resultList[index]['Name']),
-                              subtitle: Text(resultList[index]['Email']),
+                              title: Text(resultList[index]['Name'],style: TextStyle(color: Colors.white),),
+                              subtitle: Text(resultList[index]['Email'],style: TextStyle(color: Colors.white60),),
                             ),
                           );
                         })
@@ -281,6 +281,7 @@ class _HomeState extends State<Home> {
                                         
                                         style: TextStyle(
                                             fontSize: 18,
+                                            color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(height: 2),
@@ -288,7 +289,7 @@ class _HomeState extends State<Home> {
                                         "Hi,What are you doing?",
                                         style: TextStyle(
                                             fontSize: 16,
-                                            color: Colors.black45),
+                                            color: Colors.white54),
                                       ),
                                     ],
                                   ),
@@ -297,12 +298,14 @@ class _HomeState extends State<Home> {
                                 const Text(
                                   "04:18 PM",
                                   style: TextStyle(
-                                      fontSize: 14, color: Colors.black45),
+                                      fontSize: 14, color: Colors.white54),
                                 ),
                               ],
                             ),
                           ),
+                         // Divider(color: Colors.blueGrey,),
                           const SizedBox(height: 30),
+                          
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -325,13 +328,14 @@ class _HomeState extends State<Home> {
                                       "Rifat Hasan Priyo",
                                       style: TextStyle(
                                           fontSize: 18,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(height: 2),
                                     Text(
                                       "Do you know what....",
                                       style: TextStyle(
-                                          fontSize: 16, color: Colors.black45),
+                                          fontSize: 16, color: Colors.white54),
                                     ),
                                   ],
                                 ),
@@ -340,7 +344,7 @@ class _HomeState extends State<Home> {
                               const Text(
                                 "07:23 PM",
                                 style: TextStyle(
-                                    fontSize: 14, color: Colors.black45),
+                                    fontSize: 14, color: Colors.white54),
                               ),
                             ],
                           ),

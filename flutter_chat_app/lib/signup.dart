@@ -124,12 +124,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 300,
                 child: Column(
                   children: [
-                    TextField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.title_outlined),
-                        hintText: 'language name',
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Add a photo"),
                     ),
                     Expanded(
                       child: image == null
@@ -197,6 +194,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Container(
           child: Stack(
@@ -243,7 +241,10 @@ class _SignUpPageState extends State<SignUpPage> {
                           height: MediaQuery.of(context).size.height / 1.33,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              gradient: LinearGradient(
+                        colors: [Color.fromARGB(255, 27, 12, 52), Colors.purple],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight),
                               borderRadius: BorderRadius.circular(10)),
                           child: Form(
                             key: _fromkey,
@@ -257,13 +258,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                   "Name",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1, color: Colors.black87),
+                                          width: 1, color: Colors.white54),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
                                     validator: (value) {
@@ -276,20 +277,22 @@ class _SignUpPageState extends State<SignUpPage> {
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         prefixIcon: Icon(
-                                            Icons.person_outline_outlined)),
+                                            Icons.person_outline_outlined,color: Colors.white54,)),
+                                            style: TextStyle(color: Colors.white),
                                   ),
                                 ),
+                                SizedBox(height: 18,),
                                 Text(
                                   "Email",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1, color: Colors.black87),
+                                          width: 1, color: Colors.white54),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
                                     validator: (value) {
@@ -301,7 +304,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                     controller: Emailcontroller,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        prefixIcon: Icon(Icons.mail_outline)),
+                                        prefixIcon: Icon(Icons.mail_outline,color: Colors.white54,)),
+                                        style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                                 SizedBox(
@@ -311,13 +315,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                   "Password",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1, color: Colors.black87),
+                                          width: 1, color: Colors.white54),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
                                     validator: (value) {
@@ -329,8 +333,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                     controller: Passwordcontroller,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        prefixIcon: Icon(Icons.key_outlined)),
+                                        prefixIcon: Icon(Icons.key_outlined,color: Colors.white54,)),
                                     obscureText: true,
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                                 SizedBox(
@@ -340,13 +345,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                   "Confirm Password",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1, color: Colors.black87),
+                                          width: 1, color: Colors.white54),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
                                     validator: (value) {
@@ -358,8 +363,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                     controller: ConfirmPasswordcontroller,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        prefixIcon: Icon(Icons.key_outlined)),
+                                        prefixIcon: Icon(Icons.key_outlined,color: Colors.white54,)),
                                     obscureText: true,
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                                 SizedBox(
@@ -388,9 +394,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                          
                                           padding: EdgeInsets.all(10),
                                           decoration: BoxDecoration(
-                                              color: Color(0xFF7f30fe),
+                                              gradient: LinearGradient(
+                        colors: [Color.fromARGB(255, 101, 58, 171), Colors.blue],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight),
                                               borderRadius:
-                                                  BorderRadius.circular(5)),
+                                                  BorderRadius.circular(0)),
                                           child: Text(
                                             "Sign Up",
                                             style: TextStyle(
@@ -414,7 +423,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         child: Text(
                                   "Sign in",
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.blue),
+                                      fontSize: 16, color: Colors.white),
                                 )))
                               ],
                             ),
