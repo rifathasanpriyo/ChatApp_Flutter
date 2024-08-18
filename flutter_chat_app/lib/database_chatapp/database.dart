@@ -59,4 +59,14 @@ class DataBaseMethod {
         .snapshots();
 }
 
+
+  Future<Stream<QuerySnapshot>> getChatRooms(String userName) async {
+    return FirebaseFirestore.instance
+        .collection("ChatRooms")
+        .where("users", arrayContains: userName)
+        .snapshots();
+  }
+
+
+
 }

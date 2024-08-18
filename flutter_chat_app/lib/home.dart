@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/chatpage.dart';
 import 'package:flutter_application_1/database_chatapp/database.dart';
 import 'package:flutter_application_1/database_chatapp/shared_orefer.dart';
+import 'package:flutter_application_1/profile_info.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -78,11 +81,13 @@ class _HomeState extends State<Home> {
   }
 
   String? myname, myusername, mymail;
+  var myimage;
 
   Future<void> getthesharepre() async {
     myname = await SharePreferenceHelper().getUserDisplayName();
     myusername = await SharePreferenceHelper().getUserName();
     mymail = await SharePreferenceHelper().getUserMail();
+    myimage = await SharePreferenceHelper().getUserPhoto();
     if (mounted) {
       setState(() {});
     }
@@ -104,14 +109,15 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color.fromARGB(255, 66, 25, 90),
+      backgroundColor: Colors.purple,
+      drawer: Drawer(),
       body: Container(
         decoration: const BoxDecoration(),
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 40, bottom: 20),
+                  left: 8, right: 20, top: 40, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -127,10 +133,27 @@ class _HomeState extends State<Home> {
                             style: const TextStyle(color: Colors.white),
                           ),
                         )
-                      : const Text(
-                          "Chat APP",
-                          style: TextStyle(fontSize: 22, color: Colors.white,fontWeight: FontWeight.bold),
-                        ),
+                      : Row(
+                        children: [
+                          Container(
+                            
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 33, 4, 49),
+                          borderRadius: BorderRadius.circular(20)),
+                            child: IconButton(onPressed: (){ 
+                            Navigator.push(context, MaterialPageRoute(builder: (_)=> ProfileInfoPage(name:myname! ,username: myusername!, mail: mymail!,photo: myimage)));
+                            }, icon: Icon(Icons.person_4_sharp,color: Colors.white,size: 30,)),
+                          ),
+                          SizedBox(width: 6,),
+                          const Text(
+                              "Chat APP",
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                        ],
+                      ),
                   GestureDetector(
                     onTap: () {
                       if (mounted) {
@@ -169,7 +192,7 @@ class _HomeState extends State<Home> {
                     : MediaQuery.sizeOf(context).height / 1.15,
                 width: MediaQuery.sizeOf(context).width,
                 decoration: const BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.black87,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20))),
@@ -199,12 +222,22 @@ class _HomeState extends State<Home> {
                                       name: resultList[index]["Name"],
                                       username: resultList[index]["UserName"],
                                       mail: resultList[index]["Email"],
+                                      photo: resultList[index]["Photo"],
                                     ),
                                   ),
                                 );
                               }
                             },
                             child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: resultList[index]['Photo'] !=
+                                        null
+                                    ? NetworkImage(resultList[index]['Photo'])
+                                    : null,
+                                child: resultList[index]['Photo'] == null
+                                    ? Text(resultList[index]['Name'][0])
+                                    : null,
+                              ),
                               title: Text(resultList[index]['Name']),
                               subtitle: Text(resultList[index]['Email']),
                             ),
@@ -212,47 +245,62 @@ class _HomeState extends State<Home> {
                         })
                     : Column(
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(70),
-                                child: Image.asset(
-                                  "images/sheikh_hasina.png",
-                                  height: 70,
-                                  width: 70,
-                                  fit: BoxFit.cover,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => ChatPage(
+                                          name: "Sheikh Hasina",
+                                          username: "sheikhhasina3314",
+                                          mail: "sheikhhasina3314@gmail.com",
+                                          photo:
+                                              "https://firebasestorage.googleapis.com/v0/b/chatapp-ci-be5d3.appspot.com/o/images%2F1000000037.jpg?alt=media&token=3e8ca925-70fa-4ba2-b6cc-b01af76747f0")));
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(70),
+                                  child: Image.asset(
+                                    "images/shei.png",
+                                    height: 70,
+                                    width: 70,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 7),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text(
-                                      "Sheikh Hasina",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(height: 2),
-                                    Text(
-                                      "Hi,What are you doing?",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black45),
-                                    ),
-                                  ],
+                                const SizedBox(width: 12),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 7),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: const [
+                                      Text(
+                                        "Sheikh Hasina",
+                                        
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 2),
+                                      Text(
+                                        "Hi,What are you doing?",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black45),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const Spacer(),
-                              const Text(
-                                "04:18 PM",
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.black45),
-                              ),
-                            ],
+                                const Spacer(),
+                                const Text(
+                                  "04:18 PM",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.black45),
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 30),
                           Row(
@@ -283,8 +331,7 @@ class _HomeState extends State<Home> {
                                     Text(
                                       "Do you know what....",
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black45),
+                                          fontSize: 16, color: Colors.black45),
                                     ),
                                   ],
                                 ),

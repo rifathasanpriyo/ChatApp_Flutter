@@ -23,11 +23,11 @@ SharedPreferences prefs= await SharedPreferences.getInstance();
 return prefs.setString(userMailKey, getUserMail);
 
 }
-// Future<bool>saveUserPhoto(String getUserPhoto)async{ 
-// SharedPreferences prefs= await SharedPreferences.getInstance();
-// return prefs.setString(userPhotoKey, getUserPhoto);
+Future<bool>saveUserPhoto(String getUserPhoto)async{ 
+SharedPreferences prefs= await SharedPreferences.getInstance();
+ return prefs.setString(userPhotoKey, getUserPhoto);
 
-// }
+ }
 Future<bool>saveUserDisplayName(String getUserDisplayName)async{ 
 SharedPreferences prefs= await SharedPreferences.getInstance();
 return prefs.setString(userDisplayName, getUserDisplayName);
@@ -56,12 +56,12 @@ SharedPreferences prefs=await SharedPreferences.getInstance();
 return prefs.getString(userMailKey);
 
 }
-// Future<String?>getUserPhoto()async{ 
+ Future<String?>getUserPhoto()async{ 
 
-// SharedPreferences prefs=await SharedPreferences.getInstance();
-// return prefs.getString(userPhotoKey);
+SharedPreferences prefs=await SharedPreferences.getInstance();
+ return prefs.getString(userPhotoKey);
 
-// }
+}
 Future<String?>getUserDisplayName()async{ 
 
 SharedPreferences prefs=await SharedPreferences.getInstance();

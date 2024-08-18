@@ -201,7 +201,7 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home()));
                                         decoration: BoxDecoration(
                                             color: Color(0xFF7f30fe),
                                             borderRadius:
-                                                BorderRadius.circular(10)),
+                                                BorderRadius.circular(5)),
                                         child: Text(
                                           "Sign In",
                                           style: TextStyle(

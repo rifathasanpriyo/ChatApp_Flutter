@@ -1,10 +1,18 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/chatpage.dart';
 import 'package:flutter_application_1/database_chatapp/database.dart';
 import 'package:flutter_application_1/database_chatapp/shared_orefer.dart';
 import 'package:flutter_application_1/home.dart';
 import 'package:flutter_application_1/signin_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -15,7 +23,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  String Name = "", Email = "", Password = "",ConfirmPassword="";
+  String Name = "", Email = "", Password = "", ConfirmPassword = "";
+  var imageurl;
 
   TextEditingController Namecontroller = new TextEditingController();
   TextEditingController Emailcontroller = new TextEditingController();
@@ -27,7 +36,8 @@ class _SignUpPageState extends State<SignUpPage> {
   SignUpFunction() async {
     if (Password != null &&
         Namecontroller.text.isNotEmpty &&
-        Emailcontroller.text.isNotEmpty && Password==ConfirmPassword) {
+        Emailcontroller.text.isNotEmpty &&
+        Password == ConfirmPassword) {
       try {
         UserCredential userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -43,6 +53,8 @@ class _SignUpPageState extends State<SignUpPage> {
           "UserName": Emailcontroller.text.replaceAll("@gmail.com", ""),
           //"Photo":"images/profilepic.png",
           "Id": Id,
+          "Password": Password,
+          "Photo": imageurl,
         };
         await DataBaseMethod().addUserDetails(userInfoMap, Id);
 
@@ -51,16 +63,13 @@ class _SignUpPageState extends State<SignUpPage> {
             .saveUserName(Emailcontroller.text.replaceAll("@gmail.com", ""));
         await SharePreferenceHelper().saveUserMail(Emailcontroller.text);
         await SharePreferenceHelper().saveUserDisplayName(Namecontroller.text);
-        //await SharePreferenceHelper().saveUserPhoto("images/profilepic.png");
+        await SharePreferenceHelper().saveUserPhoto(imageurl);
 
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Sign Up Successful")));
 
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => SinginPage()));
-
-
-
       } on FirebaseAuthException catch (e) {
         if (e.code == "weak-password") {
           ScaffoldMessenger.of(context)
@@ -68,27 +77,121 @@ class _SignUpPageState extends State<SignUpPage> {
         } else if (e.code == "email-already-in-use") {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("This email is already in use")));
-              
-        }
-        else if (e.code == "invalid-email") {
+        } else if (e.code == "invalid-email") {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("This email is invalid in use")));
-      }
-        else{ 
+        } else {
           print("Error adding user details: $e");
         }
-       }
-      catch (e) {
-       print("Error adding user details: $e");
-  ScaffoldMessenger.of(context)
-      .showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
+      } catch (e) {
+        print("Error adding user details: $e");
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
       }
     }
     if (Password != ConfirmPassword) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Passwords do not match.")));
-    return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Passwords do not match.")));
+      return;
+    }
   }
+
+  // image picker firebase
+  TextEditingController _nameController = TextEditingController();
+  XFile? image;
+  final ImagePicker _picker = ImagePicker();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final storage = FirebaseFirestore.instance;
+
+  progressDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+  }
+
+  writeData(context) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              child: Container(
+                height: 300,
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.title_outlined),
+                        hintText: 'language name',
+                      ),
+                    ),
+                    Expanded(
+                      child: image == null
+                          ? Center(
+                              child: IconButton(
+                                onPressed: () async {
+                                  XFile? pickedImage = await _picker.pickImage(
+                                      source: ImageSource.gallery);
+                                  if (pickedImage != null) {
+                                    setState(() {
+                                      image = pickedImage;
+                                    });
+                                  }
+                                },
+                                icon: Icon(Icons.add_a_photo),
+                              ),
+                            )
+                          : Image.file(
+                              File(image!.path),
+                              fit: BoxFit.contain,
+                            ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (image == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("No image selected")),
+                          );
+                          return;
+                        }
+                        try {
+                          progressDialog();
+                          File imgFile = File(image!.path);
+                          UploadTask uploadTask = FirebaseStorage.instance
+                              .ref("images")
+                              .child(image!.name)
+                              .putFile(imgFile);
+                          TaskSnapshot snapshot = await uploadTask;
+                          imageurl = await snapshot.ref.getDownloadURL();
+                          Navigator.of(context)
+                            ..pop()
+                            ..pop();
+                        } catch (e) {
+                          print("Upload error: $e");
+                          Navigator.of(context)
+                            ..pop()
+                            ..pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Upload failed")),
+                          );
+                        }
+                      },
+                      child: Text("Upload"),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -147,6 +250,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                ElevatedButton(onPressed: (){ 
+                                     writeData(context);
+                                }, child: Text("Upload a photo")),
                                 Text(
                                   "Name",
                                   style: TextStyle(
@@ -244,12 +350,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
                                     validator: (value) {
-                                      
                                       if (value == null || value.isEmpty) {
                                         return "Please enter a password";
                                       }
                                       return null;
-                                    
                                     },
                                     controller: ConfirmPasswordcontroller,
                                     decoration: InputDecoration(
@@ -259,7 +363,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 30,
+                                  height: 20,
                                 ),
                                 Center(
                                   child: Material(
@@ -271,28 +375,47 @@ class _SignUpPageState extends State<SignUpPage> {
                                             Name = Namecontroller.text;
                                             Email = Emailcontroller.text;
                                             Password = Passwordcontroller.text;
-                                            ConfirmPassword=ConfirmPasswordcontroller.text;
+                                            ConfirmPassword =
+                                                ConfirmPasswordcontroller.text;
                                           });
                                         }
                                         SignUpFunction();
                                       },
-                                      child: Container(
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                            color: Color(0xFF7f30fe),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Text(
-                                          "Sign Up",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
+                                      child: Material(
+                                        elevation: 5,
+                                        borderRadius:   BorderRadius.circular(20),
+                                        child: Container(
+                                         
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xFF7f30fe),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Text(
+                                            "Sign Up",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                )
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (_)=>SinginPage() ));
+                                  },
+                                    child: Center(
+                                        child: Text(
+                                  "Sign in",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.blue),
+                                )))
                               ],
                             ),
                           ),

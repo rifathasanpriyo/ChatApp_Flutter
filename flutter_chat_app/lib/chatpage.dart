@@ -10,7 +10,8 @@ import 'package:random_string/random_string.dart';
 
 class ChatPage extends StatefulWidget {
   String name, username, mail;
-  ChatPage({required this.name, required this.username, required this.mail});
+  var photo;
+  ChatPage({required this.name, required this.username, required this.mail,required this.photo});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -75,38 +76,41 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  Widget chatMessageTile(String message, bool sendByme) {
-    return Row(
-      mainAxisAlignment: sendByme ? MainAxisAlignment.end : MainAxisAlignment.start,
-      children: [
-        Flexible(
-          child: Container(
-            margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-                bottomLeft: sendByme ? Radius.circular(0) : Radius.circular(24),
-                topRight: Radius.circular(24),
-                bottomRight: sendByme ? Radius.circular(24) : Radius.circular(0),
-              ),
-              color: sendByme ? Colors.blue : const Color.fromARGB(255, 218, 7, 7),
+ Widget chatMessageTile(String message, bool sendByme) {
+  return Row(
+    mainAxisAlignment: sendByme ? MainAxisAlignment.end : MainAxisAlignment.start,
+    children: [
+      if (!sendByme) // Show avatar on the left side if message is from others
+        CircleAvatar(
+          backgroundImage: NetworkImage(widget.photo),
+          radius: 20,
+        ),
+      Flexible(
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24),
+              bottomLeft: sendByme ? Radius.circular(24) : Radius.circular(0),
+              topRight: Radius.circular(24),
+              bottomRight: sendByme ? Radius.circular(0) : Radius.circular(24),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                message,
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
+            color: sendByme ? Colors.blue : const Color.fromARGB(255, 218, 7, 7),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              message,
+              style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ),
         ),
-        CircleAvatar(
-          backgroundColor: Colors.amber,
-          radius: 20,
-        )
-      ],
-    );
-  }
+      ),
+      
+    ],
+  );
+}
+
 
   Widget chatMessage() {
     return StreamBuilder(
@@ -143,7 +147,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Color.fromARGB(255, 66, 25, 90),
+      backgroundColor: Colors.purple,
       body: SafeArea(
         child: Stack(
           children: [
@@ -169,9 +173,13 @@ class _ChatPageState extends State<ChatPage> {
                         width: 30,
                         height: 60,
                       ),
+                      CircleAvatar( 
+                        backgroundImage: NetworkImage(widget.photo),
+                      ),
+                      SizedBox(width: 10,),
                       Text(
                         widget.name,
-                        style: TextStyle(fontSize: 22, color: Colors.white70),
+                        style: TextStyle(fontSize: 22, color: Colors.white),
                       ),
                     ],
                   ),
