@@ -34,26 +34,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final _fromkey = GlobalKey<FormState>();
 
   SignUpFunction() async {
-     
-    if (Namecontroller.text.isEmpty) {
-    Fluttertoast.showToast(msg: "Name cannot be empty", gravity: ToastGravity.CENTER);
-    return;
-  }
-  if (Emailcontroller.text.isEmpty) {
-    Fluttertoast.showToast(msg: "Email cannot be empty", gravity: ToastGravity.CENTER);
-    return;
-  }
-
-  if (Passwordcontroller.text.isEmpty) {
-    Fluttertoast.showToast(msg: "Password cannot be empty", gravity: ToastGravity.CENTER);
-    return;
-  }
-
-  if (Password != ConfirmPassword) {
-    Fluttertoast.showToast(msg: "Passwords do not match", gravity: ToastGravity.CENTER);
-    return;
-  }
-
     if (Password != null &&
         Namecontroller.text.isNotEmpty &&
         Emailcontroller.text.isNotEmpty &&
@@ -287,12 +267,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                           width: 1, color: Colors.white54),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
-                                    // validator: (value) {
-                                    //   if (value == null || value.isEmpty) {
-                                    //     return "Please enter your name";
-                                    //   }
-                                    //   return null;
-                                    // },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Please enter your name";
+                                      }
+                                      return null;
+                                    },
                                     controller: Namecontroller,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
@@ -315,12 +295,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                           width: 1, color: Colors.white54),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
-                                    // validator: (value) {
-                                    //   if (value == null || value.isEmpty) {
-                                    //     return "Please enter your mail";
-                                    //   }
-                                    //   return null;
-                                    // },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Please enter your mail";
+                                      }
+                                      return null;
+                                    },
                                     controller: Emailcontroller,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
@@ -344,12 +324,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                           width: 1, color: Colors.white54),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
-                                    // validator: (value) {
-                                    //   if (value == null || value.isEmpty) {
-                                    //     return "Please enter a password";
-                                    //   }
-                                    //   return null;
-                                    // },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Please enter a password";
+                                      }
+                                      return null;
+                                    },
                                     controller: Passwordcontroller,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
@@ -359,7 +339,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 18,
+                                  height: 10,
                                 ),
                                 Text(
                                   "Confirm Password",
@@ -374,12 +354,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                           width: 1, color: Colors.white54),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
-                                    // validator: (value) {
-                                    //   if (value == null || value.isEmpty) {
-                                    //     return "Please enter a password";
-                                    //   }
-                                    //   return null;
-                                    // },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Please enter a password";
+                                      }
+                                      return null;
+                                    },
                                     controller: ConfirmPasswordcontroller,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
@@ -389,7 +369,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 18,
+                                  height: 20,
                                 ),
                                 Center(
                                   child: Material(
@@ -407,28 +387,25 @@ class _SignUpPageState extends State<SignUpPage> {
                                         }
                                         SignUpFunction();
                                       },
-
-                                      child: Expanded(
-                                        child: Material(
-                                          elevation: 5,
-                                          borderRadius:   BorderRadius.circular(20),
-                                          child: Container(
-                                           
-                                            padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                                colors: [Color.fromARGB(255, 101, 58, 171), Colors.blue],
-                                                                begin: Alignment.topLeft,
-                                                                end: Alignment.bottomRight),
-                                                borderRadius:
-                                                    BorderRadius.circular(0)),
-                                            child: Text(
-                                              "Sign Up",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                      child: Material(
+                                        elevation: 5,
+                                        borderRadius:   BorderRadius.circular(20),
+                                        child: Container(
+                                         
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                        colors: [Color.fromARGB(255, 101, 58, 171), Colors.blue],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight),
+                                              borderRadius:
+                                                  BorderRadius.circular(0)),
+                                          child: Text(
+                                            "Sign Up",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ),
                                       ),
